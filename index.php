@@ -77,11 +77,9 @@ $result = $stmt->fetchAll();
 ?>
 
 <table>
-    <th>
-        <td>Serienamn</td><td>Länk</td><td>Status</td><td>Antal Säsonger</td>
-    </th>
- 
- 
+    
+    <th>Serienamn</th><th>Länk</th><th>Status</th><th>Antal Säsonger</th>
+    
 <?php
 foreach($result as $row) {
 ?>

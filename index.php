@@ -21,8 +21,8 @@ pass_hash:      string		hashed version of users password
 id:             int			unique id for internal use
 user_id:        int			owner of this entry
 series_id:      int			id of the series
-rating:         float?		users rating of the series(may be NULL)
-progress:       float?		how far have the user watched
+rating:         int			users rating of the series(may be NULL)
+progress:       string		how far have the user watched
  
  
 -->

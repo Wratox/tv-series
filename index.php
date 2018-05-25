@@ -77,9 +77,9 @@ $result = $stmt->fetchAll();
 ?>
 
 <table>
-    <th>
-        <td>Serienamn</td><td>Länk</td><td>Status</td><td>Antal Säsonger</td>
-    </th>
+    <tr>
+        <th>Serienamn</th><th>Länk</th><th>Status</th><th>Antal Säsonger</th>
+    </tr>
  
  
 <?php
@@ -90,7 +90,7 @@ foreach($result as $row) {
             <?php echo($row['name']);?>
         </td>
         <td>
-            <?php echo('https://www.imdb.com/title/'.$row['imdbid'].'/');?>
+            <a href="<?php echo('https://www.imdb.com/title/'.$row['imdbid'].'/');?>">IMDb</a>
         </td>
         <td>
             <?php echo($row['status']);?>

@@ -80,8 +80,7 @@ $result = $stmt->fetchAll();
     <tr>
         <th>Serienamn</th><th>Länk</th><th>Status</th><th>Antal Säsonger</th>
     </tr>
- 
- 
+
 <?php
 foreach($result as $row) {
 ?>
@@ -95,9 +94,9 @@ foreach($result as $row) {
         <td>
             <?php echo($row['status']);?>
         </td>
-		<td>
-			<?php echo($row['season_count']);?>
-		</td>
+        <td>
+	    <?php echo($row['season_count']);?>
+        </td>
     </tr>
 <?php
 }

@@ -21,10 +21,18 @@ pass_hash:      string		hashed version of users password
 id:             int			unique id for internal use
 user_id:        int			owner of this entry
 series_id:      int			id of the series
-rating:         float?		users rating of the series(may be NULL)
-progress:       float?		how far have the user watched
+rating:         int			users rating of the series(may be NULL)
+progress:       string		how far have the user watched
  
  
+----episodes database----
+
+id:				int			unique id for internal use
+imdbparentid	string		imdbid of the tv-series the episode belongs to
+season_number	int			number of the season the episode belongs to
+episode_number	int			number of the episode in the season
+
+
 -->
 <!DOCTYPE html>
 <head>
@@ -52,7 +60,6 @@ try {
     );
 	
     $pdo = new PDO($dsn, $username, $password, $options);
-	echo('Successfully connected to database');
 	
 } catch(PDOException $e) {
 
@@ -85,23 +92,26 @@ $result = $stmt->fetchAll();
 foreach($result as $row) {
 ?>
     <tr>
-        <td>
-            <?php echo($row['name']);?>
-        </td>
-        <td>
-            <a href="<?php echo('https://www.imdb.com/title/'.$row['imdbid'].'/');?>">IMDb</a>
-        </td>
-        <td>
-            <?php echo($row['status']);?>
-        </td>
-        <td>
-	    <?php echo($row['season_count']);?>
-        </td>
+        <td><?php echo($row['name']);?></td>
+        <td><a href="https://www.imdb.com/title/<?php echo($row['imdbid']);?>/">IMDb</a></td>
+        <td><?php echo($row['status']);?></td>
+        <td><?php echo($row['season_lengths']);?></td>
     </tr>
 <?php
 }
 ?>
- 
+
 </table>
+<form action="addseries.php" method="post">
+	<fieldset>
+		<legend>Add Series</legend>
+		<label for="name">Name of the series</label>
+		<input type="text" id="name" name="name">
+		<button type="submit">Add Series</button>
+	</fieldset>
+</form>
+<?php
+include 'addseries.php';
+?>
 </body>
 </html>

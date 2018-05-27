@@ -7,6 +7,10 @@ name:           string		name of the tv-series
 imdbid:         string		imdbid of the tv-series
 status:         enum		status of the series (DEAD|ALIVE|etc.)
 season_count:	int			number of seasons
+season_lengths	string		space separated list of number of episodes in each season
+plot			text		a short description of the tv-series
+genre			string		genre(s) of the tv-series
+poster			string		url to the movies poster
  
 
 ----users  database----
@@ -85,7 +89,7 @@ $result = $stmt->fetchAll();
 
 <table>
     <tr>
-        <th>Serienamn</th><th>Länk</th><th>Status</th><th>Antal Säsonger</th>
+        <th>Name</th><th>Link</th><th>Status</th><th>Seasons</th><th>Plot</th><th>Genre</th>
     </tr>
 
 <?php
@@ -93,20 +97,22 @@ foreach($result as $row) {
 ?>
     <tr>
         <td><?php echo($row['name']);?></td>
-        <td><a href="https://www.imdb.com/title/<?php echo($row['imdbid']);?>/">IMDb</a></td>
+        <td><a href="https://www.imdb.com/title/<?php echo($row['imdbid']);?>/"><img src="<?php echo $row['poster'];?>" height="100"></a></td>
         <td><?php echo($row['status']);?></td>
-        <td><?php echo($row['season_lengths']);?></td>
+        <td><?php echo($row['season_count']);?></td>
+        <td><?php echo($row['plot']);?></td>
+        <td><?php echo($row['genre']);?></td>
     </tr>
 <?php
 }
 ?>
 
 </table>
-<form action="addseries.php" method="post">
+<form id="addseries" action="addseries.php" method="post">
 	<fieldset>
 		<legend>Add Series</legend>
 		<label for="name">Name of the series</label>
-		<input type="text" id="name" name="name">
+		<input type="text" id="name" name="name" required="required" pattern="[A-Za-z0-9.,/\' _-!?+]+<!--|tt[0-9]{7}-->">
 		<button type="submit">Add Series</button>
 	</fieldset>
 </form>

@@ -1,0 +1,7 @@
+#addseries input:invalid{
+	border: red dashed 2px;
+}
+
+#addseries input:valid{
+	border: blue dotted 2px;
+}

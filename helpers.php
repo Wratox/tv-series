@@ -1,4 +1,7 @@
 <?php
+
+$config = require 'config.php';
+
 //TODO: remove error msg
 function formatError($e, $sql="") {
 	if($sql == "")
@@ -7,18 +10,25 @@ function formatError($e, $sql="") {
 		die($sql . "<br>" . $e->getMessage());
 }
 
+// Object used to communicate with database
+// Should be usable as drop in replacement for PDO
 class Database{
-	function __construct($dsn, $username, $password, $options) {
+	function __construct() {
 		try {		
 			/*
 			 * Declare the error mode as exception on creation.
 			 * ATTR_EMULATE_PREPARES forces PDO to use prepared statements.
 			 * It also helps against SQL-injection.
 			 */
+			
 			$options = array(
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 				PDO::ATTR_EMULATE_PREPARES => false
 			);
+			
+			$dsn = $config['database']['dsn'];
+			$username = $config['database']['username'];
+			$password = $config['database']['password'];
 			
 			$pdo = new PDO($dsn, $username, $password, $options);
 			
@@ -73,6 +83,7 @@ class Database{
 	private $db;
 }
 
+// Statment object similar to what would be returned by $pdo->prepare() etc.
 class Statement {
 	function __construct($stmt) {
 		$this->$stmt = $stmt;

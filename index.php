@@ -41,6 +41,7 @@ episode_number	int			number of the episode in the season
 <!DOCTYPE html>
 <head>
 	<link href="stylesheet.css" rel="stylesheet" type="text/css" media="screen">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 </head>
 <body>
 <?php
@@ -83,7 +84,7 @@ try {
 
 $stmt = $pdo->prepare('SELECT * FROM series ORDER BY name ASC');
 $stmt->execute();
-$result = $stmt->fetchAll();
+$resultSeries = $stmt->fetchAll();
  
 ?>
 
@@ -93,7 +94,7 @@ $result = $stmt->fetchAll();
     </tr>
 
 <?php
-foreach($result as $row) {
+foreach($resultSeries as $row) {
 ?>
     <tr>
         <td><?php echo($row['name']);?></td>
@@ -108,14 +109,7 @@ foreach($result as $row) {
 ?>
 
 </table>
-<form id="addseries" action="addseries.php" method="post">
-	<fieldset>
-		<legend>Add Series</legend>
-		<label for="name">Name of the series</label>
-		<input type="text" id="name" name="name" required="required" pattern="[A-Za-z0-9.,/\' _-!?+]+<!--|tt[0-9]{7}-->">
-		<button type="submit">Add Series</button>
-	</fieldset>
-</form>
+
 <?php
 include 'addseries.php';
 ?>

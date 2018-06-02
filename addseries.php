@@ -1,8 +1,26 @@
 <?php
+/*
+ * ----Important!----
+ * For writes, such as INSERT or UPDATE, it’s especially critical to still filter your data first and 
+ * sanitize it for other things (removal of HTML tags, JavaScript, etc).
+ * PDO will only sanitize it for SQL, not for your application.
+ */
+	
+if(isset($_POST['name'])){	
+$name = strip_tags(trim($_POST['name']));
+$imdbinfo = '';
+/*
+ * Change to preg_match_all if we want to add support for adding multiple tv-series in one submit.
+ * And surround the whole adding procedure with a foreach-loop.
+ */
+if(preg_match('~tt[0-9]{7}~', $name, $imdbids)){
+	$imdbinfo = file_get_contents('http://www.omdbapi.com/?i='.$imdbids[0].'&type=series&apikey=1fb60737');
+}
+else{
+	$name = rawurlencode($name);		//Need to replace spaces in title with underscores
+	$imdbinfo = file_get_contents('http://www.omdbapi.com/?t='.$name.'&type=series&apikey=1fb60737');
+}
 
-$name = rawurlencode('The Crossing');		//Need to replace spaces in title with underscores
-
-$imdbinfo = file_get_contents('http://www.omdbapi.com/?t='.$name.'&type=series&apikey=1fb60737');
 $imdbinfo = json_decode($imdbinfo, true);
 var_dump($imdbinfo);
 
@@ -44,7 +62,6 @@ $result = $stmt->fetchAll();
 $season_count = $result[0]['MAX(season_number)'];
 */
 
-//$season_lengths = '';
 $stmt = $pdo->prepare('SELECT MAX(episode_number) FROM episodes WHERE imdbparentid = :imdbparentid AND season_number = :season_count');
 $i = 1;
 $stmt->bindParam(':imdbparentid', $seriesdata['imdbid']);
@@ -55,5 +72,26 @@ for(; $i <= $seriesdata['season_count']; $i++) {
 	$result = $stmt->fetchColumn();
 	$seriesdata['season_lengths'] .= $result . ' ';
 }
-var_dump($seriesdata);
-//echo $season_lengths;
+//var_dump($seriesdata);
+}
+?>
+<form id="addseries" action="" method="post">
+	<fieldset>
+		<legend>Add Series</legend>
+		<p>Autocomplete options above the line are series that already exists in the database.</p>
+		<label for="name">Name of the series</label>
+		<input type="text" id="name" name="name" list="series" autocomplete="on" required="required" pattern="[A-Za-z0-9.,\\\/' _\-!?]+">
+		<span class="error-message"><i class="fas fa-check"></i><i class="fas fa-times"></i></span>
+		<datalist id="series">
+		<?php
+			foreach($resultSeries as $row => $moviename){
+		?>
+				<option value="<?php echo($moviename['name']);?>"></option>
+		<?php
+			}
+		?>
+		</datalist>
+		
+		<button type="submit">Add Series</button>
+	</fieldset>
+</form>

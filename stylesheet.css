@@ -1,7 +1,18 @@
-#addseries input:invalid{
-	border: red dashed 2px;
+.error-message .fas{
+	display:none;
 }
 
-#addseries input:valid{
-	border: blue dotted 2px;
+#addseries input:focus:invalid + .error-message .fas{
+	color: red;
+}
+
+#addseries input:focus:invalid + .error-message .fa-times{
+	display:initial;
+}
+
+#addseries input:focus:valid+ .error-message .fas, #addseries input:valid+.error-message .fas{
+	color: green;
+}
+#addseries input:focus:valid+ .error-message .fa-check, #addseries input:valid+.error-message .fa-check{
+	display:initial;
 }

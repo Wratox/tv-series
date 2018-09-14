@@ -18,6 +18,7 @@ poster			string		url to the movies poster
 id:             int			unique id for internal use
 username:       string		well, the name of the user
 pass_hash:      string		hashed version of users password
+salt			string		unique salt for each user
  
  
 ----watched database----
@@ -38,6 +39,9 @@ episode_number	int			number of the episode in the season
 
 
 -->
+<?php
+include 'functions.php';
+?>
 <!DOCTYPE html>
 <head>
 	<link href="stylesheet.css" rel="stylesheet" type="text/css" media="screen">
@@ -97,12 +101,12 @@ $resultSeries = $stmt->fetchAll();
 foreach($resultSeries as $row) {
 ?>
     <tr>
-        <td><?php echo($row['name']);?></td>
-        <td><a href="https://www.imdb.com/title/<?php echo($row['imdbid']);?>/"><img src="<?php echo $row['poster'];?>" height="100"></a></td>
-        <td><?php echo($row['status']);?></td>
-        <td><?php echo($row['season_count']);?></td>
-        <td><?php echo($row['plot']);?></td>
-        <td><?php echo($row['genre']);?></td>
+        <td><?php o($row['name']);?></td>
+        <td><a href="https://www.imdb.com/title/<?php o($row['imdbid']);?>/"><img src="<?php o($row['poster']);?>" height="100"></a></td>
+        <td><?php o($row['status']);?></td>
+        <td><?php o($row['season_count']);?></td>
+        <td><?php o($row['plot']);?></td>
+        <td><?php o($row['genre']);?></td>
     </tr>
 <?php
 }
